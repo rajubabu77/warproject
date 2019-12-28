@@ -8,7 +8,7 @@ node {
        sh"${MVNCMD} clean package"
    }
    stage('build image'){
-       sh'docker build -t rajubabu77/toi'
+       sh'docker build -t rajubabu77/toi .'
        sh 'docker_tag rajubabu77/toi rajubabu77/toi:$BUILD_ID'
    }
    stage('push doc image'){
