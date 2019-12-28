@@ -9,16 +9,16 @@ node {
    }
    stage('build image'){
        sh'docker build -t rajubabu77/toi'
-       sh 'docker_tag rajubabu77/toi rajubabu77/toi:'
+       sh 'docker_tag rajubabu77/toi rajubabu77/toi:$BUILD_ID'
    }
    stage('push doc image'){
       withCredentials([string(credentialsId: 'dockerh', variable: 'docker_hub')]) {
           sh "docker login -u rajubabu77 -p ${docker_hub}"
    }
-   sh 'docker push rajubabu77/toi:'
+   sh 'docker push rajubabu77/toi:$BUILD_ID'
    }
    stage('run doc on dev env'){
-       def dockerRun='docker run -d -p 8081:8080 --name doccc rajubabu77/toi:'
+       def dockerRun='docker run -d -p 8081:8080 --name doccc rajubabu77/toi:$BUILD_ID'
        sshagent(['remote']) {
          sh "ssh -o stricthostkeychecking=no ec2-user@172.31.41.202 ${dockerRun}"
           
